@@ -1,0 +1,42 @@
+{% set null = "---" %}
+{#- 
+ tsv columns: 
+    gle eng term_type note
+-#}
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/css" href="../../scripts/gt_dictionary.css"?>
+<!DOCTYPE r
+  PUBLIC "-//DivvunGiellatekno//DTD Dictionaries//Multilingual" "../../scripts/gt_dictionary.dtd">
+<r>{% autoescape true %}
+{# split and zip on ;; ? or expand rows elsewhere. #}
+    {% for grouper, rows in rows|groupby('gle') %}
+       <e>
+          <lg>
+              <l>{{ grouper }}</l>
+          </lg>
+          <mg>
+          {% for row in rows %}
+            {% if len(row.gle.split(';;')) == len(row.eng.split(';;')) == len(row.term_type.split(';;')) %}
+              {% set rezip = izip_longest(row.gle.split(';;'), row.eng.split(';;'), row.term_type.split(';;'), fillvalue='-')|list %}
+
+              {% for (gle, eng, note) in rezip %}
+                   <tg xml:lang="eng">
+                       <t type="{{ note }}">{{ eng }}</t>
+                   </tg>
+               {% endfor %}
+            {% else %}
+               <tg xml:lang="eng">
+                   <t>{{ row.eng }}</t>
+                   {% if row.note != null %}
+                   <re>{{ row.note }}</re>
+                   {% endif %}
+                   <type>{{ row.term_type }}</type>
+               </tg>
+            {% endif %}
+          {% endfor %}
+          </mg>
+       </e>
+    {% endfor %}
+{% endautoescape %}</r>
+{# vim: set ts=4 sw=4 tw=0 ft=xml syntax=htmljinja : #}
+
