@@ -18,8 +18,7 @@ externals: apertium-gle wordnet-gaeilge
 .PHONY: environment
 environment:
 	virtualenv env
-	. env/bin/activate
-	pip install -r requirements.txt
+	. env/bin/activate && pip install -r requirements.txt
 
 wordnet.tsv: wordnet-gaeilge/en2wn.po
 	. env/bin/activate && python export_po_wordnet.py $^ > $@.tmp
@@ -70,8 +69,11 @@ iat.gle-eng.xml: iat.gle-eng.tsv
 # iat.gle-eng.xml
 all: wordnet.gle-eng.xml
 
+# TODO: need to move some stuff to tmp
 clean: 
-	rm -rf wordnet.tsv wordnet.ga.tsv tmp/*.tsv
+	rm -rf wordnet.tsv wordnet.ga.tsv tmp/*.tsv *.tsv *.tmp
 	rm -rf apertium-gle
 	rm -rf wordnet-gaeilge
 	rm -rf *.tmp
+	rm -rf env/
+	rm -rf tmp/
