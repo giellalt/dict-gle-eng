@@ -5,6 +5,10 @@ allows for inclusion of our own material, and exclusion of material from
 external sources that we do not need. Upstream changes should be easily
 mergable.
 
+TODO:
+ 
+ * initial lexicon is about 35 mb, once i have this down to a reasonable size,
+   I'll check that in in src/
 
 Sources:
 
